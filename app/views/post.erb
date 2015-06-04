@@ -12,11 +12,14 @@
 
   <!-- Display all comments for this post -->
   <ul>
-    <% @post.comments.each do |comment| %>
+    <% @post.comments.each_with_index do |comment, index| %>
       <li>
-        <a href="/users/<%= comment.user.id %>"><%= comment.user.username %></a>
+        <%= @comment_votes[index] %> points | by <a href="/users/<%= comment.user.id %>"><%= comment.user.username %></a>
         <br/>
         <%= comment.comment_desc %>
+        <br/>
+        <a href="/upvote/comment/<%= comment.id %>">Upvote</a>
+        <a href="/downvote/comment/<%= comment.id %>">Downvote</a>
       </li>
     <% end %>
   </ul>

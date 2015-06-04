@@ -17,13 +17,42 @@ enable :sessions
 # OK!
 get '/' do
 	@posts = Post.all
+	@post_votes = []
+	@posts.each do |post|
+		count = 0
+		post.posts_votes.each do |posts_vote|
+			count += posts_vote.vote
+		end
+		# @post_votes = array of total votes for all posts
+		@post_votes << count
+	end
 	erb :index
 end
 
 # Display one particular post
 get "/posts/:post_id" do
 	@post = Post.find(params[:post_id])
+	@comment_votes = []
+	@post.comments.each do |comment|
+		count = 0
+		comment.comments_votes.each do |comments_vote|
+			count += comments_vote.vote
+		end
+		# @post_votes = array of total votes for all posts
+		@comment_votes << count
+	end
 	erb :post
+end
+
+post "/posts/:post_id/vote" do
+	PostsVote.create(
+			user_id: session[:id],
+			post_id: params[:post_id].to_i,
+			vote: params[:vote].to_i)
+	@post = Post.find(params[:post_id])
+	votes_total = @post.posts_votes.sum(:vote)
+	# @post.posts_votes.pluck(:vote).inject(:+)
+	{post_id: @post.id, votes: votes_total}.to_json
 end
 
 # Add a new comment to particular post

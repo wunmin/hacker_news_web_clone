@@ -8,7 +8,11 @@
         </a>
         <br/>
         by <%= @user.username %> | <%= post.comments.length %> comment(s)
+        <br/>
+        <a href="/upvote/post/<%= post.id %>">Upvote</a>
+        <a href="/downvote/post/<%= post.id %>">Downvote</a>
       </li>
+      <br/>
     <% end %>
   </ul>
 

@@ -3,11 +3,56 @@
 
   <h3>All posts</h3>
   <ul>
-    <% @posts.each do |post| %>
-      <li>
+    <% @posts.each_with_index do |post, index| %>
+      <li id="post<%= post.id %>">
         <a href="/posts/<%= post.id %>"><%= post.post_desc %>
         </a>
+        <br/>
+        <span>
+          <%= @post_votes[index] %> points
+        </span>
+          by <a href="/users/<%= post.user.id %>"><%= post.user.username %></a> | <%= post.comments.count %> comments
+        <br/>
+        <a class="upvote" data-post-id="<%= post.id %>">Upvote</a>
+        <a class="downvote" data-post-id="<%= post.id %>">Downvote</a>
       </li>
+      <br/>
     <% end %>
   </ul>
 </div>
+
+// <script>
+$(document).ready(function() {
+  $(".upvote").on("click", function(event) {
+    event.preventDefault();
+    var postId = $(this).data("post-id");
+    var url = "/posts/" + postId + "/vote"
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: {"post_id": postId,
+               "vote": 1},
+        dataType: "json"
+      }).done(function(response){
+        $("#post" + response["post_id"] + " span").text(response["votes"] + " points");
+    });
+  });
+
+  $(".downvote").on("click", function(event) {
+    event.preventDefault();
+    var postId = $(this).data("post-id");
+    var url = "/posts/" + postId + "/vote"
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: {"post_id": postId,
+               "vote": -1},
+        dataType: "json"
+      }).done(function(response){
+        $("#post" + response["post_id"] + " span").text(response["votes"] + " points");
+    });
+  });
+
+
+});
+// </script>

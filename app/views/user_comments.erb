@@ -9,8 +9,12 @@
         Post: <a href="/posts/<%= comment.post.id %>"><%= comment.post.post_desc %></a>
         <br/>
         Comment: <%= comment.comment_desc %>
+        <br/>
+        <a href="/upvote/comment/<%= comment.id %>">Upvote</a>
+        <a href="/downvote/comment/<%= comment.id %>">Downvote</a>
 
       </li>
+      <br/>
     <% end %>
   </ul>
 
