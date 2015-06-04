@@ -1,0 +1,24 @@
+<div class="container">
+  <h1>Post: <%= @post.post_desc %></h1>
+  <h5>by <%= @post.user.username %> | <%= @post.comments.length %> comment(s)</h5>
+
+  <!-- Add new comment -->
+  <form action="/posts/<%= @post.id %>" method="POST">
+    <input type="textarea" name="post[comment_desc]" placeholder="your comment here">
+    <input type="hidden" name="post[user_id]" value="<%= session[:id] %>">
+    <input type="hidden" name="post[post_id]" value="<%= @post.id %>">
+    <input type="submit" value="add comment">
+  </form>
+
+  <!-- Display all comments for this post -->
+  <ul>
+    <% @post.comments.each do |comment| %>
+      <li>
+        <a href="/users/<%= comment.user.id %>"><%= comment.user.username %></a>
+        <br/>
+        <%= comment.comment_desc %>
+      </li>
+    <% end %>
+  </ul>
+
+</div>

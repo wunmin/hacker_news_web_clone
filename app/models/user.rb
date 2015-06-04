@@ -1,13 +1,12 @@
 class User < ActiveRecord::Base
-  has_one :profile
   has_many :posts
   has_many :comments
-  # has_many :likes
-  # has_and_belongs_to_many :tags
+  validates :username, :password, :name, :email, :dob, presence: true
 
   def self.authenticate(username, password)
     @user = User.find_by_username(username)
-    if @user == []
+    byebug
+    if @user.nil?
       nil
     elsif @user.password == password
       @user

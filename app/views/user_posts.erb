@@ -1,0 +1,15 @@
+<div class="container">
+  <h1><%= @user.username%>'s submissions</h1>
+
+  <ul>
+    <% @user.posts.each do |post| %>
+      <li>
+        <a href="/posts/<%= post.id %>"><%= post.post_desc %>
+        </a>
+        <br/>
+        by <%= @user.username %> | <%= post.comments.length %> comment(s)
+      </li>
+    <% end %>
+  </ul>
+
+</div>

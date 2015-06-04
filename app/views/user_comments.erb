@@ -1,0 +1,17 @@
+<div class="container">
+  <h1><%= @user.username%>'s comments</h1>
+
+  <ul>
+    <% @user.comments.each do |comment| %>
+      <li>
+        <a href="/users/<%= @user.id %>"><%= @user.username %></a>
+        <br/>
+        Post: <a href="/posts/<%= comment.post.id %>"><%= comment.post.post_desc %></a>
+        <br/>
+        Comment: <%= comment.comment_desc %>
+
+      </li>
+    <% end %>
+  </ul>
+
+</div>
