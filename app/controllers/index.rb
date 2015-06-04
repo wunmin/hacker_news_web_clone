@@ -89,6 +89,7 @@ end
 post "/new_user" do
 	# @auth_result = nil or @user
 	@new_user = User.create(params[:new_user])
+	byebug
 	if @new_user == nil
 		erb :index
 	else

@@ -13,8 +13,10 @@
         </span>
           by <a href="/users/<%= post.user.id %>"><%= post.user.username %></a> | <%= post.comments.count %> comments
         <br/>
-        <a class="upvote" data-post-id="<%= post.id %>">Upvote</a>
-        <a class="downvote" data-post-id="<%= post.id %>">Downvote</a>
+        <button <%= "disabled" if post.posts_votes.find_by(user_id: session[:id]) && post.posts_votes.find_by_user_id(session[:id]).vote == 1 %> class="upvote" data-post-id="<%= post.id %>" width="40px" height="40px">Upvote</button>
+        <button <%= "disabled" if post.posts_votes.find_by(user_id: session[:id]) && post.posts_votes.find_by_user_id(session[:id]).vote == -1 %> class="downvote" data-post-id="<%= post.id %>" width="40px" height="40px">Downvote</button>
+
+
       </li>
       <br/>
     <% end %>
@@ -23,6 +25,10 @@
 
 // <script>
 $(document).ready(function() {
+
+  // Check if any post-vote combination for that user already exists and change upvote/downvote button to disabled
+
+
   $(".upvote").on("click", function(event) {
     event.preventDefault();
     var postId = $(this).data("post-id");
@@ -35,6 +41,7 @@ $(document).ready(function() {
         dataType: "json"
       }).done(function(response){
         $("#post" + response["post_id"] + " span").text(response["votes"] + " points");
+        $("#post" + response["post_id"] + " button" + ".upvote").attr("disabled", "disabled")
     });
   });
 
@@ -50,6 +57,7 @@ $(document).ready(function() {
         dataType: "json"
       }).done(function(response){
         $("#post" + response["post_id"] + " span").text(response["votes"] + " points");
+        $("#post" + response["post_id"] + " button" + ".downvote").attr("disabled", "disabled")
     });
   });
 
